@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.web-server {
+  display: flex;
+}
+
+.web-server .unhandled {
+  width: 15rem;
+  margin-top: 9rem;
+  margin-right: 3rem;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #313538;
+}
+
+.web-server .unhandled h3 {
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.web-server .unhandled .unhandled-item {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.4rem;
+  cursor: pointer;
+}
+
+.web-server .unhandled .unhandled-item:hover {
+  background-color: #313538;
+  color: #fff;
+  border-radius: 0.2rem;
+}
+
+.chat-room {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  background-color: #FCFEFC;
+  z-index: 99;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #313538;
+}
+
+.input-room-group {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.input-room-group input{
+  width: 80%;
+  height: 2rem;
+  margin-right: auto;
+  padding: 1rem;
+}
+
+.input-room-group button {
+  background-color: #313538;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.chat-message {
+  height: 30rem;
+  /* height: 7rem; */
+  padding: 0.8rem 1.2rem;
+  font-size: 0.8rem;
+  overflow: auto;
+}
+
+.chat-input-group {
+  display: flex;
+  margin-top: auto;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input-group textarea {
+  width: 85%;
+  height: 10rem;
+  resize: none;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  color: #313538;
+  margin-right: auto;
+  border-radius: 5px;
+}
+
+.chat-input-group button {
+  display: block;
+  cursor: not-allowed;
+  background-color: #313538;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+}
+
+.chat-message small {
+  font-style: italic;
+  color: #333;
+  font-weight: 500;
+}
+
+.chat-message>div {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  max-width: 45%;
+  margin-bottom: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.chat-message div.send {
+  justify-content: end;
+  margin-left: auto;
+}
+
+.chat-message div.receive {
+  justify-content: start;
+  margin-right: auto;
+}
+
+.chat-message span {
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+}
+
+.chat-message .send span {
+  margin-left: 0.5rem;
+  background-color: #313538;
+  color: #fff;
+}
+
+.chat-message .receive span {
+  margin-right: 0.5rem;
+  background-color: #D5D7D5;
+  color: #313538;
+}
