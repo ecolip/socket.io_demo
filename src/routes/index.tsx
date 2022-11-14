@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ChatRoom from '../pages/ChatRoom';
-import WebServer from '../pages/WebServer';
+import WebChat from '../pages/WebChat';
+import WebChat2 from '../pages/WebChat2';
 
 function RoutesSetting () {
   return ( 
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<ChatRoom />} />
-        <Route path='/web_service' element={<WebServer />} />
+        <Route path='/' element={<WebChat />} />
+        <Route path='/chat2' element={<WebChat2 />} />
       </Routes>
     </BrowserRouter>
   );

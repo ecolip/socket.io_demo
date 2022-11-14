@@ -27,22 +27,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket) => {
   console.log(`New Connection: ${socket.id} ...`);
 
-  socket.on('user_join', (user) => {
-    console.log('user_join');
-    socket.join(user.email);
-  });
-
-  socket.on('admin_join', () => {
-    socket.join('admin');
+  socket.on('user_join', (uuid) => {
+    socket.join(uuid);
   });
 
   // Listen for chatMessage
   socket.on('send_message', (playload) => {
-    if(playload.username === 'admin'){
-      io.to(playload.email).emit('receive_message', playload);
-    }else{
-      io.to('admin').emit('receive_message', playload);
-    }
+    console.log('監聽send_message一次', playload);
+    io.to(playload.uuid).emit('receive_message', playload);
   });
 });
 

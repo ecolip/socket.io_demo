@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://localhost:5500",
+    origin: "https://localhost:3001",
     methods: ["GET", "POST"],
   },
 });
@@ -19,8 +19,8 @@ io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
   //監聽"join_room" event, 是相同的room number才能互傳訊息
-  socket.on("join_room", (data) => {
-    socket.join(data);
+  socket.on('user_join', (uuid) => {
+    socket.join(uuid);
   });
 
   //on監聽"send_message" event
@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log("SERVER IS RUNNING");
-});
+const PORT = 3000 || process.env.REACT_APP_PORT;
+
+//將 express 放進 http 中開啟 Server 的 3000 port ，正確開啟後會在 console 中印出訊息
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
