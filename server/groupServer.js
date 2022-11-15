@@ -16,7 +16,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+  console.log(`User Connected: ${socket.id}, index2`);
 
   //監聽"join_room" event, 是相同的room number才能互傳訊息
   socket.on('user_join', (uuid) => {
