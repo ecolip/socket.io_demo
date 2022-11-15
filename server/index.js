@@ -32,18 +32,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('group_join', (uuid) => {
-    // console.log(uuid);
     socket.join(uuid);
   });
 
   // Listen for chatMessage
   socket.on('send_message', (playload) => {
-    console.log('監聽send_message一次', playload);
     io.to(playload.uuid).emit('receive_message', playload);
   });
 
   socket.on('group_send_message', (playload) => {
-    console.log('監聽group_send_message一次', playload);
     io.to(playload.uuid).emit('group_receive_message', playload);
   });
 });
