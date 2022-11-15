@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './webChat.css';
+import './style.css';
 import { io } from 'socket.io-client';
 import api from '../../utils/api';
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:5500');
 
 const jwtToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm92aWRlciI6ImZhY2Vib29rIiwibmFtZSI6IueOi-WntembryIsImVtYWlsIjoid2VuODYwODMxQGdtYWlsLmNvbSIsInBpY3R1cmUiOiJodHRwczovL2dyYXBoLmZhY2Vib29rLmNvbS8zMTExMTU2NDk5MTk4ODM3L3BpY3R1cmU_dHlwZT1sYXJnZSIsImlhdCI6MTY1MzkwNzM3OX0.pgRuhU8zYcHrIylRecNXmPTXo9kiqI35m68WDGt1d6Y';

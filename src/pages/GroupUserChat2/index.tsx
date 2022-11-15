@@ -1,30 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './webChat.css';
+import './style.css';
 import { io } from 'socket.io-client';
-import api from '../../utils/api';
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:5500');
 
 const jwtToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm92aWRlciI6ImZhY2Vib29rIiwibmFtZSI6IueOi-WntembryIsImVtYWlsIjoid2VuODYwODMxQGdtYWlsLmNvbSIsInBpY3R1cmUiOiJodHRwczovL2dyYXBoLmZhY2Vib29rLmNvbS8zMTExMTU2NDk5MTk4ODM3L3BpY3R1cmU_dHlwZT1sYXJnZSIsImlhdCI6MTY1MzkwNzM3OX0.pgRuhU8zYcHrIylRecNXmPTXo9kiqI35m68WDGt1d6Y';
 const DefaultUnhandled = [
   {
-    timestamp: 1668402924,
-    email: 'rose@gmail.com',
-    username: 'rose',
-    uuid: 'aaa'
+    group: 'bicycleA',
+    uuid: 'bicycleA',
   },
   {
-    timestamp: 1668402925,
-    email: 'lisa@gmail.com',
-    username: 'lisa',
-    uuid: 'bbb'
+    group: 'bicycleB',
+    uuid: 'bicycleB',
   },
   {
-    timestamp: 1668402926,
-    email: 'mark@gmail.com',
-    username: 'mark',
-    uuid: 'ccc'
-  }
+    group: 'bicycleC',
+    uuid: 'bicycleC',
+  },
 ]
 const emptyStyle = {
   cursor: 'not-allowed',
@@ -41,19 +34,17 @@ type AllMessageType = {
   date?: string,
   time?: string
 }
-type UnhandledType = {
-  timestamp: number,
-  email: string,
-  username: string,
+type GroupsType = {
+  group: string,
   uuid: string,
 }
 
 function WebServer() {
   const [msg, setMsg] = useState<string>('');
   const [allMessage, setAllMessage] = useState<AllMessageType[] | []>([]);
-  const [unhandled, setUnhandled] = useState<UnhandledType[]| []>([]);
-  const [selectedFriend, setSelectedFriend] = useState<UnhandledType | null>(null);
-  const msgRef = useRef(null);
+  const [groups, setGroups] = useState<GroupsType[]| []>([]);
+  const [selectedGroup, setSelectedGroup] = useState<GroupsType | null>(null);
+  const msgRef = useRef<HTMLDivElement | null>(null);
   const myEmail = useRef<string>('');
 
   const translateWeekName = (day: number) => {
@@ -106,20 +97,19 @@ function WebServer() {
   const sendMessage = () => {
     const timestamp = Date.now();
     const trimMessage = msg.trim();
-    if (trimMessage !== '' && selectedFriend) {
+    if (trimMessage !== '' && selectedGroup) {
       setMsg(trimMessage);
-      socket.emit('send_message', {
+      socket.emit('group_send_message', {
         msg,
         timestamp,
-        username: 'emma',
         email: myEmail.current,
-        receiveEmail: selectedFriend.email,
-        uuid: selectedFriend.uuid,
+        group: selectedGroup.uuid,
+        uuid: selectedGroup.uuid,
       });
       addMessage('send', trimMessage, timestamp);
       setMsg('');
     }else {
-      alert('請選擇朋友!')
+      alert('請選擇group!')
     }
   };
 
@@ -136,20 +126,17 @@ function WebServer() {
     return output;
   };
 
-  const chatEachOther = (item: UnhandledType) => {
-    setSelectedFriend(item);
-    socket.emit('user_join', item.uuid);
+  const selectGroup = (item: GroupsType) => {
+    setSelectedGroup(item);
+    socket.emit('group_join', item.uuid);
+    setAllMessage([]);
   };
 
-  const renderUnhandled = () => {
-    const output = unhandled.map((item) => {
+  const renderGroups = () => {
+    const output = groups.map((item) => {
       return (
-        <div className='unhandled-item' key={item.timestamp} onClick={()=>{chatEachOther(item)}}>
-          <div>{item.email}</div>
-          <div>{item.username}</div>
-          <div>{`${transferDateToString(item.timestamp)} ${transferTimeToString(
-            item.timestamp
-          )}`}</div>
+        <div className='unhandled-item' key={item.uuid} onClick={()=>{selectGroup(item)}}>
+          <div>{item.group}</div>
         </div>
       );
     });
@@ -157,20 +144,20 @@ function WebServer() {
   };
 
   useEffect(() => {
-    myEmail.current = 'emma@gmail.com';
-    setUnhandled(DefaultUnhandled);
+    myEmail.current = 'lisa@gmail.com';
+    setGroups(DefaultUnhandled);
   }, []);
 
   useEffect(() => {
     //監聽'receive_message' event
-    socket.on('receive_message', (data) => {
+    socket.on('group_receive_message', (data) => {
       if (data.email !== myEmail.current) {
         console.log(data);
         addMessage('receive', data.msg, data.timestamp);
       }
     });
     return () => {
-      socket.off('receive_message');
+      socket.off('group_receive_message');
     }
   }, []);
 
@@ -178,11 +165,11 @@ function WebServer() {
     <React.Fragment>
       <div className='web-server'>
         <div className='unhandled'>
-          <h3>emma@gmail.com<br/>所有朋友訊息</h3>
-          {unhandled.length > 0 && renderUnhandled()}
+          <h3>{myEmail.current}<br/>參加的所有group</h3>
+          {groups.length > 0 && renderGroups()}
         </div>
         <div>
-          <h1>Web chat</h1>
+          <h1>Web chat group {selectedGroup?.group}</h1>
           <div className='chat-room'>
             <div id='chat-message' className='chat-message' ref={msgRef}>
               {allMessage.length > 0 && renderMessage()}

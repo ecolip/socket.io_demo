@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon userServer.js",
-    "group": "nodemon groupServer.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
